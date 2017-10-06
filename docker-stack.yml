@@ -1,0 +1,36 @@
+version: "3.3"
+
+services:
+
+  eureka:
+    image: churrops/eureka:1.7
+    ports: 
+      - "9090:9090"
+    networks:
+      - network-backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+      update_config:
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
+
+  zuul:
+    image: churrops/zuul:1.0
+    ports: 
+      - "8190:8190"
+    networks:
+      - network-backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+      update_config:
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
+
+networks:
+  network-backend:
